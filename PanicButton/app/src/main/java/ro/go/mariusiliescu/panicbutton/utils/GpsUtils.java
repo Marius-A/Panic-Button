@@ -40,16 +40,21 @@ public class GpsUtils extends Service implements LocationListener {
         canGetLocation = false;
         this.context = context;
         getLocation();
-
-        Log.d("X", "net "+isGPSEnabled);
-        Log.d("X", "gps " + isNetworkEnabled);
     }
 
     public Location getLocation() {
         try {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+Log.d("x",""+isGPSEnabled);
+
+
+
+            Log.d("X", "net "+isGPSEnabled);
+            Log.d("X", "gps " + isNetworkEnabled);
+
 
             if (!isGPSEnabled && !isNetworkEnabled) {
 
@@ -64,7 +69,9 @@ public class GpsUtils extends Service implements LocationListener {
                                 MIN_DISTANCE_VHANGE_FOR_UPDATES, this);
 
                         if (locationManager != null) {
+                            Log.d("x","gps");
                             location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                            return location;
                         }
                     }
                 }
@@ -76,9 +83,13 @@ public class GpsUtils extends Service implements LocationListener {
                             MIN_DISTANCE_VHANGE_FOR_UPDATES, this);
 
                     if (locationManager != null) {
+                        Log.d("x","net");
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        return location;
                     }
                 }
+
+
             }
         } catch (SecurityException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -112,9 +123,6 @@ public class GpsUtils extends Service implements LocationListener {
             longitude = location.getLongitude();
         }
         return longitude;
-    }
-    public boolean getIsNetworkEnabled(){
-        return  this.isNetworkEnabled;
     }
 
     public void showSettingsAlert(){
@@ -187,20 +195,15 @@ public class GpsUtils extends Service implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
-    private void toggleGPS(boolean enable) {
-        String provider = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if(provider.contains("gps") == enable) {
-            return; // the GPS is already in the requested state
+    private void toggleGPS() {
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if(!provider.contains("gps")){
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings","com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            sendBroadcast(poke);
         }
-
-        final Intent poke = new Intent();
-        poke.setClassName("com.android.settings",
-                "com.android.settings.widget.SettingsAppWidgetProvider");
-        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-        poke.setData(Uri.parse("3"));
-        context.sendBroadcast(poke);
     }
     // automatic turn off the gps
     public void turnGPSOff()

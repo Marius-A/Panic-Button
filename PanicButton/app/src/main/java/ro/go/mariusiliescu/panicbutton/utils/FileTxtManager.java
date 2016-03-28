@@ -2,6 +2,7 @@ package ro.go.mariusiliescu.panicbutton.utils;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -15,9 +16,9 @@ import java.io.InputStreamReader;
 /**
  * Created by maryus on 26.03.2016.
  */
-public class TxtManager {
+public class FileTxtManager {
     Context c;
-    public TxtManager(Context c){
+    public FileTxtManager(Context c){
         this.c = c;
     }
     public void writeToFile(Editable data) {
@@ -64,5 +65,13 @@ public class TxtManager {
         }
 
         return ret;
+    }
+
+    public static final boolean isValidPhoneNumber(CharSequence target) {
+        if (target == null || TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.PHONE.matcher(target).matches();
+        }
     }
 }

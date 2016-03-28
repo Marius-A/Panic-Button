@@ -13,7 +13,7 @@ import ro.go.mariusiliescu.panicbutton.constants.KeyConstant;
 import ro.go.mariusiliescu.panicbutton.utils.GpsUtils;
 import ro.go.mariusiliescu.panicbutton.utils.PhoneData;
 import ro.go.mariusiliescu.panicbutton.utils.SmsSender;
-import ro.go.mariusiliescu.panicbutton.utils.TxtManager;
+import ro.go.mariusiliescu.panicbutton.utils.FileTxtManager;
 
 public class MediaButtonIntentReciever extends BroadcastReceiver
 {
@@ -41,7 +41,7 @@ public class MediaButtonIntentReciever extends BroadcastReceiver
     {
         GpsUtils gps;
         SmsSender sms;
-        TxtManager txtManager;
+        FileTxtManager fileTxtManager;
 
         if ( intent != null && intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
 
@@ -100,14 +100,14 @@ public class MediaButtonIntentReciever extends BroadcastReceiver
 
                             gps = new GpsUtils(context);
                             sms = new SmsSender(context);
-                            txtManager = new TxtManager(context);
-                            String phoneNumber = txtManager.readFromFile();
+                            fileTxtManager = new FileTxtManager(context);
+                            String phoneNumber = fileTxtManager.readFromFile();
 
                             Log.d("x", "latitude  = " + gps.getLatitude());
                             Log.d("x", "longitude = " + gps.getLongitude());
                             Log.d("x", "Sms sended to : " + phoneNumber);
-
-                            sms.sendSms(phoneNumber, "Ajutor!\n Arabii !!!\n https://www.google.ro/maps/place/" + gps.getLatitude() + "," + gps.getLongitude() + "");
+                            Log.d("x", "https://www.google.ro/maps/place/" + gps.getLatitude() + "," + gps.getLongitude() + "");
+                           // sms.sendSms(phoneNumber, "Ajutor!\nArabii !!!\nhttps://www.google.ro/maps/place/" + gps.getLatitude() + "," + gps.getLongitude() + "");
 
                             Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(300);

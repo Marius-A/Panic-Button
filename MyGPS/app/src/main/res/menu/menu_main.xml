@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ro.go.mariusiliescu.mygps.MainActivity">
+    <item
+        android:id="@+id/action_locate"
+        android:orderInCategory="0"
+        android:title="@string/action_location"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_mylocation"/>
+</menu>

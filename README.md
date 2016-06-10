@@ -1,3 +1,2 @@
-# Some mini Android applications
- - PanicButton
- - GpsApp
+# Panic Button
+**Panic Button** is a simple Android app by pressing 5 times  of any the volume keys on the phone, manages to take and transmit the current location by SMS to a particular person selected from the phone book.
